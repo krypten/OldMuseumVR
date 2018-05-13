@@ -35,10 +35,10 @@ public class ElevatorController : MonoBehaviour
 	public void LevelChange()
 	{
 		Exit();
-		if (Application.loadedLevelName == "Forest") {
+		if (SceneManager.GetActiveScene().name == "Forest") {
 			SceneManager.LoadScene("MainMuseum");
 		}
-		else if (Application.loadedLevelName == "MainMuseum")
+		else if (SceneManager.GetActiveScene().name == "MainMuseum")
 		{
 			SceneManager.LoadScene("Forest");
 		}
