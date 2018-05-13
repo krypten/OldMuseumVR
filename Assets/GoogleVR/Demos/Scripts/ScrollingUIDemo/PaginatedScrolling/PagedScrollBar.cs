@@ -21,6 +21,7 @@ using System.Collections;
 /// The Scrollbar will also automatically update when the PagedScrollRect
 /// is scrolled directly.
 public class PagedScrollBar : Scrollbar {
+#if UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
   public const string PAGED_SCROLL_RECT_PROP_NAME = "pagedScrollRect";
 
   [SerializeField]
@@ -86,4 +87,5 @@ public class PagedScrollBar : Scrollbar {
     base.OnPointerUp(eventData);
     IsDragging = false;
   }
+#endif  // UNITY_HAS_GOOGLEVR &&(UNITY_ANDROID || UNITY_EDITOR
 }

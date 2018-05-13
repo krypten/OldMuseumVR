@@ -34,6 +34,7 @@ Shader "GoogleVR/Demos/Unlit/GVRDemo Color From Grayscale"
       #pragma target 2.0
 
       #include "UnityCG.cginc"
+      #include "../../../Shaders/GvrUnityCompatibility.cginc"
 
       struct appdata {
         float4 vertex : POSITION;
@@ -50,7 +51,7 @@ Shader "GoogleVR/Demos/Unlit/GVRDemo Color From Grayscale"
 
       v2f vert (appdata v) {
         v2f o;
-        o.vertex = UnityObjectToClipPos(v.vertex);
+        o.vertex = GvrUnityObjectToClipPos(v.vertex);
         o.uv = TRANSFORM_TEX(v.uv, _MainTex);
         return o;
       }

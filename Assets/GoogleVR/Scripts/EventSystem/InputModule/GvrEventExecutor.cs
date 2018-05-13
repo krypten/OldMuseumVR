@@ -71,16 +71,6 @@ public class GvrEventExecutor : IGvrEventExecutor {
     }
   }
 
-  // Fired when a Scroll event occurs on any object.
-  public event EventDelegate OnScroll {
-    add {
-      AddEventDelegate<IScrollHandler>(value);
-    }
-    remove {
-      RemoveEventDelegate<IScrollHandler>(value);
-    }
-  }
-
   /// Stores delegates for events.
   private Dictionary<Type, EventDelegate> eventTable;
 

@@ -20,6 +20,7 @@ using UnityEngine.Events;
 // Used inside a scrolling page view. It contains abstract functions for handling
 // interactions between itself and the gvr controller.
 public abstract class BaseTile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IGvrPointerHoverHandler {
+#if UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
   protected Transform originalParent;
   protected Quaternion originalRotation;
   protected Vector3 originalPosition;
@@ -62,6 +63,7 @@ public abstract class BaseTile : MonoBehaviour, IPointerEnterHandler, IPointerEx
   protected virtual void OnEnable() {
     Reset();
   }
+#endif  // UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
 
   public abstract void OnPointerEnter(PointerEventData eventData);
 
@@ -69,6 +71,7 @@ public abstract class BaseTile : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
   public abstract void OnGvrPointerHover(PointerEventData eventData);
 
+#if UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
   public bool IsInteractable {
     get {
       return isInteractable;
@@ -139,4 +142,5 @@ public abstract class BaseTile : MonoBehaviour, IPointerEnterHandler, IPointerEx
       graphic.raycastTarget = isRaycastTarget;
     }
   }
+#endif  // UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
 }

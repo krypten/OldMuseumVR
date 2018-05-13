@@ -73,45 +73,6 @@ public class GvrPointerInputModule : BaseInputModule, IGvrInputModuleController 
     }
   }
 
-  public static GvrBasePointer Pointer {
-    get {
-      GvrPointerInputModule module = FindInputModule();
-      if (module == null || module.Impl == null) {
-        return null;
-      }
-
-      return module.Impl.Pointer;
-    }
-    set {
-      GvrPointerInputModule module = FindInputModule();
-      if (module == null || module.Impl == null) {
-        return;
-      }
-
-      module.Impl.Pointer = value;
-    }
-  }
-
-  /// GvrBasePointer calls this when it is created.
-  /// If a pointer hasn't already been assigned, it
-  /// will assign the newly created one by default.
-  ///
-  /// This simplifies the common case of having only one
-  /// GvrBasePointer so is can be automatically hooked up
-  /// to the manager.  If multiple GvrBasePointers are in
-  /// the scene, the app has to take responsibility for
-  /// setting which one is active.
-  public static void OnPointerCreated(GvrBasePointer createdPointer) {
-    GvrPointerInputModule module = FindInputModule();
-    if (module == null || module.Impl == null) {
-      return;
-    }
-
-    if (module.Impl.Pointer == null) {
-      module.Impl.Pointer = createdPointer;
-    }
-  }
-
   /// Helper function to find the Event Executor that is part of
   /// the input module if one exists in the scene.
   public static GvrEventExecutor FindEventExecutor() {
@@ -130,35 +91,13 @@ public class GvrPointerInputModule : BaseInputModule, IGvrInputModuleController 
       return null;
     }
 
-    EventSystem eventSystem = EventSystem.current;
-    if (eventSystem == null) {
+    BaseInputModule inputModule = EventSystem.current.currentInputModule;
+    if (inputModule == null) {
       return null;
     }
 
-    GvrPointerInputModule gvrInputModule =
-      eventSystem.GetComponent<GvrPointerInputModule>();
-
+    GvrPointerInputModule gvrInputModule = inputModule as GvrPointerInputModule;
     return gvrInputModule;
-  }
-
-  /// Convenience function to access what the current RaycastResult.
-  public static RaycastResult CurrentRaycastResult {
-    get {
-      GvrPointerInputModule inputModule = GvrPointerInputModule.FindInputModule();
-      if (inputModule == null) {
-        return new RaycastResult();
-      }
-
-      if (inputModule.Impl == null) {
-        return new RaycastResult();
-      }
-
-      if (inputModule.Impl.CurrentEventData == null) {
-        return new RaycastResult();
-      }
-
-      return inputModule.Impl.CurrentEventData.pointerCurrentRaycast;
-    }
   }
 
   public override bool ShouldActivateModule() {
@@ -212,6 +151,7 @@ public class GvrPointerInputModule : BaseInputModule, IGvrInputModuleController 
 
     Impl.ScrollInput = scrollInput;
     Impl.VrModeOnly = vrModeOnly;
+    Impl.Pointer = GvrPointerManager.Pointer;
     Impl.ModuleController = this;
     Impl.EventExecutor = EventExecutor;
   }

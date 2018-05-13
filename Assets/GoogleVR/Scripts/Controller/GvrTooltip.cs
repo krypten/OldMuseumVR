@@ -25,7 +25,8 @@ using System.Collections;
 [RequireComponent(typeof(CanvasGroup))]
 [RequireComponent(typeof(RectTransform))]
 [ExecuteInEditMode]
-public class GvrTooltip : MonoBehaviour, IGvrArmModelReceiver {
+public class GvrTooltip : MonoBehaviour {
+#if UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
   /// Rotation for a tooltip when it is displayed on the right side of the controller visual.
   protected static readonly Quaternion RIGHT_SIDE_ROTATION = Quaternion.Euler(0.0f, 0.0f, 0.0f);
 
@@ -81,8 +82,6 @@ public class GvrTooltip : MonoBehaviour, IGvrArmModelReceiver {
     }
   }
 
-  public GvrBaseArmModel ArmModel { get; set; }
-
   void Awake() {
     rectTransform = GetComponent<RectTransform>();
     canvasGroup = GetComponent<CanvasGroup>();
@@ -90,24 +89,27 @@ public class GvrTooltip : MonoBehaviour, IGvrArmModelReceiver {
     RefreshTooltip();
   }
 
-  void OnEnable() {
-    // Update using OnPostControllerInputUpdated.
-    // This way, the position and rotation will be correct for the entire frame
-    // so that it doesn't matter what order Updates get called in.
+  void Start() {
     if (Application.isPlaying) {
-      GvrControllerInput.OnPostControllerInputUpdated += OnPostControllerInputUpdated;
+      if (GvrArmModel.Instance != null) {
+        GvrArmModel.Instance.OnArmModelUpdate += OnArmModelUpdate;
+      } else {
+        Debug.LogError("Unable to find GvrArmModel.");
+      }
     }
   }
 
-  void OnDisable() {
-    GvrControllerInput.OnPostControllerInputUpdated -= OnPostControllerInputUpdated;
+  void OnDestroy() {
+    if (GvrArmModel.Instance != null) {
+      GvrArmModel.Instance.OnArmModelUpdate -= OnArmModelUpdate;
+    }
   }
 
-  private void OnPostControllerInputUpdated() {
+  private void OnArmModelUpdate() {
     CheckTooltipSide();
 
-    if (canvasGroup != null && ArmModel != null) {
-      canvasGroup.alpha = alwaysVisible ? 1.0f : ArmModel.TooltipAlphaValue;
+    if (canvasGroup != null && GvrArmModel.Instance != null) {
+      canvasGroup.alpha = alwaysVisible ? 1.0f : GvrArmModel.Instance.tooltipAlphaValue;
     }
   }
 
@@ -207,4 +209,5 @@ public class GvrTooltip : MonoBehaviour, IGvrArmModelReceiver {
     rectTransform.anchoredPosition3D = GetLocalPosition();
     OnSideChanged(isOnLeft);
   }
+#endif  // UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
 }

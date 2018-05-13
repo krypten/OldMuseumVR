@@ -33,6 +33,7 @@ Shader "GoogleVR/Demos/Unlit/GVRDemo AmbientOcclusion"
 
       #include "UnityCG.cginc"
       #include "../../../Distortion/GvrDistortion.cginc"
+      #include "../../../Shaders/GvrUnityCompatibility.cginc"
 
       struct appdata {
         float4 vertex : POSITION;
@@ -54,7 +55,7 @@ Shader "GoogleVR/Demos/Unlit/GVRDemo AmbientOcclusion"
         #if SHADER_API_MOBILE
         o.vertex = undistortVertex(v.vertex);
         #else
-        o.vertex = UnityObjectToClipPos(v.vertex);
+        o.vertex = GvrUnityObjectToClipPos(v.vertex);
         #endif  // SHADER_API_MOBILE
 
         o.uv = TRANSFORM_TEX(v.uv, _MainTex);

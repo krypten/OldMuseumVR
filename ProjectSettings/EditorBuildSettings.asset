@@ -5,12 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/ProjectVR/Scenes/MainMuseum.unity
-    guid: 9c6443887d7cf4d928d11da930b9358a
-  - enabled: 0
+  - enabled: 1
     path: Assets/ProjectVR/Scenes/Forest.unity
     guid: 6ad7a74339f8649d19c2ad81bd6f5fe7
   - enabled: 1
-    path: Assets/ProjectVR/Scenes/HistoricScene.unity
-    guid: a0ac2c5e8e15a4870a35eb9c3d1e8e7d
+    path: Assets/ProjectVR/Scenes/MainMuseum.unity
+    guid: 9c6443887d7cf4d928d11da930b9358a

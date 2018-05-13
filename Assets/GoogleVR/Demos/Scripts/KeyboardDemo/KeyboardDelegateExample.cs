@@ -87,11 +87,9 @@ public class KeyboardDelegateExample : GvrKeyboardDelegateBase {
   public void LaunchPlayStore() {
     if (UpdateCanvas != null) {
       UpdateCanvas.gameObject.SetActive(false);
-#if !UNITY_ANDROID
-      Debug.LogError("GVR Keyboard available only on Android.");
-#else
+#if UNITY_ANDROID || UNITY_EDITOR
       GvrKeyboardIntent.Instance.LaunchPlayStore();
-#endif  // !UNITY_ANDROID
+#endif
     }
   }
 }

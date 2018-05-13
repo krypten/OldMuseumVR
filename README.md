@@ -30,7 +30,7 @@ You can find the design process related to this game [here](https://medium.com/@
 #### Software Used
 * Game Engine: Unity 3D 2017.2.0f3
 * Assets:
-  * Google VR SDK v1.70.0 for Unity
+  * Google VR SDK v1.60.0 for Unity
   * Unity Standard Assets 
   * Glowing Forest
   * Protoyping Pack

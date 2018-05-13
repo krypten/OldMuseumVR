@@ -23,6 +23,7 @@ public class ScrubberEvents : MonoBehaviour {
   private Slider slider;
 
   private VideoControlsManager mgr;
+  GvrPointerInputModule inp;
 
   public VideoControlsManager ControlManager {
     set {
@@ -44,40 +45,34 @@ public class ScrubberEvents : MonoBehaviour {
   }
 
   void Update() {
-    bool setPos = false;
-    if (GvrPointerInputModule.Pointer != null) {
-      RaycastResult r = GvrPointerInputModule.Pointer.CurrentRaycastResult;
-      if (r.gameObject != null) {
-        newPositionHandle.transform.position = new Vector3(
-            r.worldPosition.x,
-            newPositionHandle.transform.position.y,
-            newPositionHandle.transform.position.z);
-        setPos = true;
-      }
-    }
-    if (!setPos) {
+    if (inp != null && inp.transform.position != Vector3.zero) {
+      newPositionHandle.transform.position = new Vector3(
+          inp.transform.position.x,
+          newPositionHandle.transform.position.y,
+          newPositionHandle.transform.position.z);
+    } else {
       newPositionHandle.transform.position = slider.handleRect.transform.position;
     }
   }
 
   public void OnPointerEnter(BaseEventData data) {
-    if (GvrPointerInputModule.Pointer != null) {
-      RaycastResult r = GvrPointerInputModule.Pointer.CurrentRaycastResult;
-      if (r.gameObject != null) {
-        newPositionHandle.transform.position = new Vector3(
-            r.worldPosition.x,
-            newPositionHandle.transform.position.y,
-            newPositionHandle.transform.position.z);
-      }
+    inp = data.currentInputModule as GvrPointerInputModule;
+    if (inp != null && inp.transform.position != Vector3.zero) {
+      newPositionHandle.transform.position = new Vector3(
+          inp.transform.position.x,
+          newPositionHandle.transform.position.y,
+          newPositionHandle.transform.position.z);
     }
     newPositionHandle.SetActive(true);
   }
 
   public void OnPointerExit(BaseEventData data) {
+    inp = null;
     newPositionHandle.SetActive(false);
   }
 
   public void OnPointerClick(BaseEventData data) {
+
     float minX = corners[0].x;
     float maxX = corners[3].x;
 

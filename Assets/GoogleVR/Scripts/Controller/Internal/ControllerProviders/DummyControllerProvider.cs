@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissioßns and
 // limitations under the License.
 
+// The controller is not available for versions of Unity without the
+// // GVR native integration.
+#if UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
+
 using Gvr;
 
 /// @cond
@@ -20,9 +24,6 @@ namespace Gvr.Internal {
   /// Used in platforms that do not support controllers.
   class DummyControllerProvider : IControllerProvider {
     private ControllerState dummyState = new ControllerState();
-    public bool SupportsBatteryStatus {
-      get { return false; }
-    }
     internal DummyControllerProvider() {}
     public void ReadState(ControllerState outState) {
       outState.CopyFrom(dummyState);
@@ -33,3 +34,4 @@ namespace Gvr.Internal {
 }
 /// @endcond
 
+#endif  // UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)

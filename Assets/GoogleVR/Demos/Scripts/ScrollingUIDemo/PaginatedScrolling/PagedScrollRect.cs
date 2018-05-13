@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 
 public class PagedScrollRect : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
+#if UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
   /// Allows you to control how sensitive the paged
   /// Scroll rect is to events from the gvr controller.
   [Tooltip("The sensitivity to gvr touch events.")]
@@ -393,19 +394,25 @@ public class PagedScrollRect : MonoBehaviour, IPointerEnterHandler, IPointerExit
     // Immediately snap to the starting page.
     SnapToPage(StartPage, true, true);
   }
+#endif  // UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
 
   public void OnPointerEnter(PointerEventData eventData) {
+#if UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
     if (onlyScrollWhenPointing) {
       isPointerHovering = true;
     }
+#endif  // UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
   }
 
   public void OnPointerExit(PointerEventData eventData) {
+#if UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
     if (onlyScrollWhenPointing) {
       isPointerHovering = false;
     }
+#endif  // UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
   }
 
+#if UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
   void Update() {
     if (isScrollOffsetOverridden) {
       LerpTowardsOffset(targetScrollOffset);
@@ -420,11 +427,11 @@ public class PagedScrollRect : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     /// Don't start scrolling until the touch pos has moved.
     /// This is to prevent scrolling when the user intended to click.
-    if (!isScrolling && GvrControllerInput.IsTouching) {
+    if (!isScrolling && GvrController.IsTouching) {
       if (!isTrackingTouches) {
         StartTouchTracking();
       } else {
-        Vector2 touchDelta = GvrControllerInput.TouchPos - initialTouchPos;
+        Vector2 touchDelta = GvrController.TouchPos - initialTouchPos;
         float xDeltaMagnitude = Mathf.Abs(touchDelta.x);
         float yDeltaMagnitude = Mathf.Abs(touchDelta.y);
 
@@ -434,8 +441,8 @@ public class PagedScrollRect : MonoBehaviour, IPointerEnterHandler, IPointerExit
       }
     }
 
-    if (isScrolling && GvrControllerInput.IsTouching) {
-      Vector2 touchDelta = GvrControllerInput.TouchPos - previousTouchPos;
+    if (isScrolling && GvrController.IsTouching) {
+      Vector2 touchDelta = GvrController.TouchPos - previousTouchPos;
 
       if (Mathf.Abs(touchDelta.x) > 0) {
         // Translate directly based on the touch value.
@@ -446,12 +453,12 @@ public class PagedScrollRect : MonoBehaviour, IPointerEnterHandler, IPointerExit
       LerpTowardsOffset(targetScrollOffset);
     }
 
-    if (GvrControllerInput.TouchUp) {
+    if (GvrController.TouchUp) {
       StopScrolling();
       StopTouchTracking();
     }
 
-    if (isTrackingTouches && GvrControllerInput.IsTouching) {
+    if (isTrackingTouches && GvrController.IsTouching) {
       TrackTouch();
     }
   }
@@ -493,7 +500,7 @@ public class PagedScrollRect : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
   private void StartTouchTracking() {
     isTrackingTouches = true;
-    initialTouchPos = GvrControllerInput.TouchPos;
+    initialTouchPos = GvrController.TouchPos;
     previousTouchPos = initialTouchPos;
     previousTouchTimestamp = Time.time;
     overallVelocity = Vector2.zero;
@@ -525,13 +532,13 @@ public class PagedScrollRect : MonoBehaviour, IPointerEnterHandler, IPointerExit
     }
 
     // Update velocity
-    Vector2 touchDelta = GvrControllerInput.TouchPos - previousTouchPos;
+    Vector2 touchDelta = GvrController.TouchPos - previousTouchPos;
     Vector2 velocity = touchDelta / timeElapsedSeconds;
     float weight = timeElapsedSeconds / (kRc + timeElapsedSeconds);
     overallVelocity = Vector2.Lerp(overallVelocity, velocity, weight);
 
     // Update the previous touch
-    previousTouchPos = GvrControllerInput.TouchPos;
+    previousTouchPos = GvrController.TouchPos;
     previousTouchTimestamp = Time.time;
   }
 
@@ -793,4 +800,5 @@ public class PagedScrollRect : MonoBehaviour, IPointerEnterHandler, IPointerExit
     return pageProvider.GetSpacing() * kIsMovingThresholdCoeff;
   }
 
+#endif  // UNITY_HAS_GOOGLEVR &&(UNITY_ANDROID || UNITY_EDITOR
 }

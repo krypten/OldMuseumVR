@@ -17,6 +17,7 @@ using UnityEditor;
 
 [CustomEditor(typeof(DemoInputManager))]
 public class DemoInputManagerEditor : Editor {
+#if UNITY_HAS_GOOGLEVR && UNITY_ANDROID
   SerializedProperty emulatedPlatformTypeProp;
   SerializedProperty gvrControllerMainProp;
   SerializedProperty gvrControllerPointerProp;
@@ -35,6 +36,7 @@ public class DemoInputManagerEditor : Editor {
   }
 
   public override void OnInspectorGUI() {
+    // Platform emulation tweaking does not apply on non-native integration versions of Unity.
     serializedObject.Update();
 
     EditorGUILayout.PropertyField(gvrControllerMainProp);
@@ -50,4 +52,5 @@ public class DemoInputManagerEditor : Editor {
 
     serializedObject.ApplyModifiedProperties();
   }
+#endif  // UNITY_HAS_GOOGLEVR && UNITY_ANDROID
 }

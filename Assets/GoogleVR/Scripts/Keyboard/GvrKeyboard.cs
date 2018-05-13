@@ -1,16 +1,16 @@
 // Copyright 2017 Google Inc. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// //
+// // Licensed under the Apache License, Version 2.0 (the "License");
+// // you may not use this file except in compliance with the License.
+// // You may obtain a copy of the License at
+// //
+// //     http://www.apache.org/licenses/LICENSE-2.0
+// //
+// // Unless required by applicable law or agreed to in writing, software
+// // distributed under the License is distributed on an "AS IS" BASIS,
+// // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// // See the License for the specific language governing permissions and
+// // limitations under the License.
 
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -78,10 +78,10 @@ public class GvrKeyboard : MonoBehaviour {
   private EditTextCallback updateCallback = null;
   private EditTextCallback enterCallback = null;
 
-#if UNITY_ANDROID
+#if UNITY_HAS_GOOGLEVR
   // Which eye is currently being rendered.
   private bool isRight = false;
-#endif // UNITY_ANDROID
+#endif // UNITY_HAS_GOOGLEVR
 
   private bool isKeyboardHidden = false;
   private const float kExecuterWait = 0.01f;
@@ -180,7 +180,7 @@ public class GvrKeyboard : MonoBehaviour {
     if (keyboardProvider == null || !IsReady) {
       return;
     }
-#if UNITY_ANDROID
+#if UNITY_HAS_GOOGLEVR
     Camera camera = Camera.current;
     if (camera && camera == Camera.main) {
       // Get current eye.
@@ -199,7 +199,9 @@ public class GvrKeyboard : MonoBehaviour {
       // Swap.
       isRight = !isRight;
     }
-#endif  // !UNITY_ANDROID
+#else
+    Debug.LogWarning("Keyboard is not supported in versions of Unity without the native integration");
+#endif  // !UNITY_HAS_GOOGLEVR
   }
 
   // Resets keyboard text.

@@ -20,6 +20,7 @@ using System.Collections;
 /// Editor preferences are editor specific options that help build and test
 /// applications from within the Unity Editor.
 class GvrEditorSettings : EditorWindow {
+#if UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
   void OnGUI () {
     // Label for Controller Emulator settings
     EditorGUILayout.LabelField("Controller Emulator", EditorStyles.boldLabel);
@@ -31,4 +32,5 @@ class GvrEditorSettings : EditorWindow {
       UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
     }
   }
+#endif  // UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
 }

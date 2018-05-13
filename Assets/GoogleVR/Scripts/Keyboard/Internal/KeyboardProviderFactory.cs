@@ -20,15 +20,13 @@ namespace Gvr.Internal {
   static class KeyboardProviderFactory {
     static internal IKeyboardProvider CreateKeyboardProvider(GvrKeyboard owner)
     {
-// Use emulator in editor.
 #if UNITY_EDITOR
       return new EmulatorKeyboardProvider();
-#elif UNITY_ANDROID
-      // Running on an Android device.
+#elif UNITY_ANDROID && UNITY_HAS_GOOGLEVR
       return new AndroidNativeKeyboardProvider();
 #else
       // Other platforms not supported, including iOS and Unity versions w/o the native integraiton.
-      Debug.LogWarning("GVR Keyboard not supported on " + Application.platform);
+      Debug.LogWarning("Platform not supported");
       return new DummyKeyboardProvider();
 #endif  // UNITY_EDITOR
     }

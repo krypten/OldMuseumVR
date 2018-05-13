@@ -19,16 +19,18 @@ namespace GVR.Input {
   /// Provides controller app button input through UnityEvents.
   /// </summary>
   public class AppButtonInput : MonoBehaviour {
+#if UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
     public ButtonEvent OnAppUp;
     public ButtonEvent OnAppDown;
 
     void Update() {
-      if (GvrControllerInput.AppButtonUp)
+      if (GvrController.AppButtonUp)
         OnAppUp.Invoke();
 
-      if (GvrControllerInput.AppButtonDown)
+      if (GvrController.AppButtonDown)
         OnAppDown.Invoke();
     }
 
+#endif  // UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
   }
 }

@@ -31,7 +31,6 @@ namespace Gvr.Internal {
         if (instance == null) {
           var gameObject = new GameObject("PhoneRemoteConfig");
           instance = gameObject.AddComponent<EmulatorConfig>();
-          DontDestroyOnLoad(instance);
         }
         return instance;
       }

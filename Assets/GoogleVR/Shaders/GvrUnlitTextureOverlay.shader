@@ -29,6 +29,7 @@ Shader "GoogleVR/Unlit/Texture Overlay" {
       #pragma multi_compile_fog
 
       #include "UnityCG.cginc"
+      #include "GvrUnityCompatibility.cginc"
 
       struct appdata_t {
         float4 vertex : POSITION;
@@ -46,7 +47,7 @@ Shader "GoogleVR/Unlit/Texture Overlay" {
 
       v2f vert (appdata_t v) {
         v2f o;
-        o.vertex = UnityObjectToClipPos(v.vertex);
+        o.vertex = GvrUnityObjectToClipPos(v.vertex);
         o.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
         UNITY_TRANSFER_FOG(o,o.vertex);
         return o;

@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissioßns and
 // limitations under the License.
 
+// The controller is not available for versions of Unity without the
+// // GVR native integration.
+#if UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
+
 using UnityEngine;
 
 /// @cond
@@ -21,13 +25,11 @@ namespace Gvr.Internal {
   static class ControllerProviderFactory {
     /// Provides a concrete implementation of IControllerProvider appropriate for the current
     /// platform. This method never returns null. In the worst case, it might return a dummy
-    /// provider if the platform is not supported. For demo purposes the emulator controller
-    /// is returned in the editor and in Standalone buids, for use inside the desktop player.
-    static internal IControllerProvider CreateControllerProvider(GvrControllerInput owner) {
-// Use emualtor in editor, and in Standalone builds (for demo purposes).
-#if UNITY_EDITOR
-      // Use the Editor controller provider which supports the controller emulator and the mouse.
-      return new EditorControllerProvider(owner.emulatorConnectionMode);
+    /// provider if the platform is not supported.
+    static internal IControllerProvider CreateControllerProvider(GvrController owner) {
+#if UNITY_EDITOR || UNITY_STANDALONE
+      // Use the Controller Emulator.
+      return new EmulatorControllerProvider(owner.emulatorConnectionMode);
 #elif UNITY_ANDROID
       // Use the GVR C API.
       return new AndroidNativeControllerProvider();
@@ -41,3 +43,4 @@ namespace Gvr.Internal {
 }
 /// @endcond
 
+#endif  // UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)

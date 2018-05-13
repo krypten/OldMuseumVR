@@ -15,42 +15,60 @@
 using UnityEngine;
 using System.Collections;
 
-public abstract class GvrBaseControllerVisual : MonoBehaviour, IGvrArmModelReceiver {
+/// Adjusts the material's alpha value according to the value suggested
+/// by the arm model.
+[RequireComponent(typeof(Renderer))]
+public abstract class GvrBaseControllerVisual : MonoBehaviour {
+#if UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
+  private Renderer materialRenderer;
+  private MaterialPropertyBlock materialPropertyBlock;
+  private int colorId;
 
   /// This is the preferred, maximum alpha value the object should have
   /// when it is a comfortable distance from the head.
   [Range(0.0f, 1.0f)]
   public float maximumAlpha = 1.0f;
 
-  public GvrBaseArmModel ArmModel { get; set; }
+  protected virtual void Start() {
+    // Setup and cache material properties.
+    materialRenderer = GetComponent<Renderer>();
+    materialPropertyBlock = new MaterialPropertyBlock();
+    colorId = Shader.PropertyToID("_Color");
 
-  public float PreferredAlpha{
-    get{
-      return ArmModel != null ? ArmModel.PreferredAlpha : 1.0f;
+    // Register the arm model updates.
+    if (GvrArmModel.Instance != null) {
+      GvrArmModel.Instance.OnArmModelUpdate += OnArmModelUpdate;
+    } else {
+      Debug.LogError("Unable to find GvrArmModel.");
     }
   }
 
-  /// Amount of normalized alpha transparency to change per second.
-  private const float DELTA_ALPHA = 4.0f;
-
-  protected virtual void Awake() {
-
-  }
-
-  void OnEnable() {
-    GvrControllerInput.OnPostControllerInputUpdated += OnPostControllerInputUpdated;
-  }
-
-  void OnDisable() {
-    GvrControllerInput.OnPostControllerInputUpdated -= OnPostControllerInputUpdated;
+  protected virtual void OnDestroy() {
+    // Unregister the arm model updates.
+    if (GvrArmModel.Instance != null) {
+      GvrArmModel.Instance.OnArmModelUpdate -= OnArmModelUpdate;
+    }
   }
 
   /// Override this method to update materials and other visual changes
   /// that need to happen every frame.
-  public abstract void OnVisualUpdate(bool updateImmediately = false);
+  public abstract void OnVisualUpdate();
 
-  private void OnPostControllerInputUpdated() {
+  private void OnArmModelUpdate() {
     OnVisualUpdate();
+    AlphaUpdate();
   }
 
+  private void AlphaUpdate() {
+    if (GvrArmModel.Instance != null &&
+        materialRenderer.sharedMaterial.HasProperty(colorId)) {
+      // Set the material's alpha to the multiplied preferred alpha.
+      Color color = materialRenderer.sharedMaterial.color;
+      color.a = maximumAlpha * GvrArmModel.Instance.preferredAlpha;
+      materialRenderer.GetPropertyBlock(materialPropertyBlock);
+      materialPropertyBlock.SetColor(colorId, color);
+      materialRenderer.SetPropertyBlock(materialPropertyBlock);
+    }
+  }
+#endif  // UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
 }

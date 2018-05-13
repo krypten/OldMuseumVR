@@ -19,6 +19,7 @@ using UnityEditor;
 /// changes based on handedness, and to make it easy to preview the handedness settings.
 [CustomEditor(typeof(GvrTooltip)), CanEditMultipleObjects]
 public class GvrTooltipEditor : Editor {
+#if UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
   public override void OnInspectorGUI() {
     DrawDefaultInspector();
     EditorGUILayout.LabelField("Current Handedness", GvrSettings.Handedness.ToString(), EditorStyles.boldLabel);
@@ -26,4 +27,5 @@ public class GvrTooltipEditor : Editor {
       EditorWindow.GetWindow(typeof(GvrEditorSettings));
     }
   }
+#endif  // UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
 }
