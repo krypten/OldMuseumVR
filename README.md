@@ -25,6 +25,7 @@ You can find the design process related to this game [here](https://medium.com/@
       * Forest : Forest scene showing forest with few relics for user 
   * Plugins/ : Plugins used for project
   * SkythianCat/ : Assets related to Glowing Forest
+  * DigitalKonstrukt/ : Assets related to Scene like Elevator
   
 
 #### Software Used
@@ -34,5 +35,4 @@ You can find the design process related to this game [here](https://medium.com/@
   * Unity Standard Assets 
   * Glowing Forest
   * Protoyping Pack
-  * Butterfly (Animated)
-  
+
