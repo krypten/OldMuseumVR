@@ -5,10 +5,13 @@ This is VR experience showcasing virtual reality and tourism industry works. The
 
 ### Inside Game
 
-[![Museum VR User Walkthrough](https://img.youtube.com/vi/JzLzY1imT2Y/0.jpg)](https://www.youtube.com/watch?v=JzLzY1imT2Y)
+[![Museum VR User Walkthrough](https://img.youtube.com/vi/M-ksQrhFI-Q/0.jpg)](https://youtu.be/M-ksQrhFI-Q)
 
 #### Game Design Overview
 You can find the design process related to this game [here](https://medium.com/@chaitiagrawal/night-at-the-museum-through-vr-284aed4f2393).
+
+#### Game Documentation
+You can find the Android apk, screenshots and user playing video in docs folder.
 
 #### Asset Structure
 * Assets/

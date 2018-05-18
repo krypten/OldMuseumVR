@@ -14,18 +14,13 @@ public class RelicVideo : MonoBehaviour {
 	void Awake()
 	{
 		videoPlayer = GetComponent<VideoPlayer> ();
-	}
+		AudioSource audioSource = GetComponent<AudioSource>();
 
-	// Use this for initialization
-	void Start ()
-	{
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-		
+		//Set Audio Output to AudioSource
+		videoPlayer.audioOutputMode = VideoAudioOutputMode.AudioSource;
+		//Assign the Audio from Video to AudioSource to be played
+		videoPlayer.EnableAudioTrack(0, true);
+		videoPlayer.SetTargetAudioSource(0, audioSource);
 	}
 
 	public void PlayPause()
@@ -39,8 +34,31 @@ public class RelicVideo : MonoBehaviour {
 		} else
 		{
 			Debug.Log("debug play");
-			videoPlayer.Play();
-			screenRenderer.material = pauseBtnMaterial;
+			Play();
 		}
+	}
+
+	void Play()
+	{
+		Application.runInBackground = true;
+        StartCoroutine(PlayVideo());
+	}
+
+	IEnumerator PlayVideo()
+	{
+		// Set video To Play then prepare Audio to prevent Buffering
+		videoPlayer.Prepare();
+
+		// Wait until Movie is prepared
+        WaitForSeconds waitTime = new WaitForSeconds(1);
+        while (!videoPlayer.isPrepared)
+        {
+            Debug.Log("Preparing Movie");
+            yield return waitTime;
+            break;
+        }
+		// Play Movie 
+        videoPlayer.Play();
+		screenRenderer.material = pauseBtnMaterial;
 	}
 }
