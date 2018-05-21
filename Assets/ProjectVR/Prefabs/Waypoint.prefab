@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 5413026}
   - component: {fileID: 11492846}
   - component: {fileID: 11482094}
-  - component: {fileID: 114750936301147430}
   m_Layer: 0
   m_Name: Waypoint
   m_TagString: Waypoint
@@ -29,8 +28,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 120140}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -19.33062, y: 0.9754181, z: -3.7048798}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: -19.33062, y: 1.411, z: -3.7048798}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -49,7 +48,7 @@ MeshRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 89faba0d1d7ec4ae3a7db9e6da3944f4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -166,7 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43b846af592c642f69fb3253ba8ad3a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  occupied: 1
+  occupied: 0
   active: 0
   focused: 0
   triggered: 0
@@ -175,9 +174,12 @@ MonoBehaviour:
   disabled_color: {r: 0.125, g: 0.125, b: 0.125, a: 0}
   animation_scale: 1.5
   animation_speed: 3
-  rigid_body: {fileID: 5413026}
-  position: {x: 65.42, y: 151.706, z: 141.024}
-  neighborhood: []
+  rigid_body: {fileID: 0}
+  position: {x: 0, y: 0, z: 0}
+  neighborhood:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!135 &13581326
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -201,36 +203,3 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 120140}
   m_IsPrefabParent: 1
---- !u!114 &114750936301147430
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 120140}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6dbca64e524ea44f9b26142ec59aca8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bypassRoomEffects: 0
-  directivityAlpha: 0
-  directivitySharpness: 1
-  listenerDirectivityAlpha: 0
-  listenerDirectivitySharpness: 1
-  gainDb: 0
-  occlusionEnabled: 0
-  playOnAwake: 1
-  sourceClip: {fileID: 8300000, guid: 456b20a47a9fd4191bb526b55ed3203b, type: 3}
-  sourceLoop: 1
-  sourceMute: 0
-  sourcePitch: 1
-  sourcePriority: 128
-  sourceSpatialBlend: 1
-  sourceDopplerLevel: 1
-  sourceSpread: 0
-  sourceVolume: 1
-  sourceRolloffMode: 0
-  sourceMaxDistance: 500
-  sourceMinDistance: 1
-  hrtfEnabled: 1
-  audioSource: {fileID: 0}
